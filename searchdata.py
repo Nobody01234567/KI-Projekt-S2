@@ -1,7 +1,7 @@
 import pandas as pd
 from math import radians, cos, sin, asin, sqrt
 import geopy
-
+import arrow
 
 
 
@@ -54,7 +54,7 @@ def parseData(lat, lon, date):
 
 # print(parseData(40.833458, -73.457279, '1869-01-01'))
 
-def checkForFire(lat, lon):
+def checkForFire(lat, lon, date):
 
     fire_df = pd.read_csv('data/modis_2021_United_States.csv')
 
@@ -71,14 +71,17 @@ def checkForFire(lat, lon):
     closest_fire = fire_df.loc[fire_df['distance'].idxmin()]
 
     closest_dist = closest_fire['distance']
+    
+    closest_date = arrow.get(closest_fire['acq_date'])
+    
+    delta = abs(closest_date - arrow.get(date))
 
-    if closest_dist < 30:
-        print('There has been a fire in this Area. It occured on ' + closest_fire['acq_date'] + ' and was ' + str(closest_dist) + ' km away from the specified coordinates. Coordinates: ' + str(closest_fire['latitude']) + ',' + str(closest_fire['longitude']) )
-
+    if closest_dist < 30 and delta.days < 10  :
+        print('There has been a fire in this Area. It occured on ' + closest_fire['acq_date'] + ' and was ' + str(closest_dist) + ' km away from the specified coordinates. Coordinates: ' + str(closest_fire['latitude']) + ',' + str(closest_fire['longitude']) )        
     else:
-        print('There has never been a fire in this Area.')
+        print('There has not been a fire in this Area during the specified date.')
 
 
-checkForFire(40.438844, -90.953431)
+checkForFire(46.789039, -100.787397, '1988-12-08')
 
 
