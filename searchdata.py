@@ -5,6 +5,7 @@ import arrow
 
 
 
+
 def parseData(lat, lon, date):
     # Load the spreadsheet into a Pandas DataFrame
     weather_df = pd.read_csv('data/weather/city_info.csv')
@@ -31,7 +32,7 @@ def parseData(lat, lon, date):
 
 
     # Find the city with the smallest distance
-    # closest_city = weather_df.loc[weather_df['distance'].idxmin()]['ID']
+    closest_city = weather_df.loc[weather_df['distance'].idxmin()]['ID']
     
     fpath = 'data/weather/' + str(closest_city) + '.csv'
 
@@ -50,8 +51,147 @@ def parseData(lat, lon, date):
     # Otherwise, return an error message
     else:
         return "Temperature data not found for given date."
-    
 
+
+def parseTmax(lat, lon, date):
+    # Load the spreadsheet into a Pandas DataFrame
+    weather_df = pd.read_csv('data/weather/city_info.csv')
+    fire_df = pd.read_csv('data/modis_2021_United_States.csv')
+    
+    # Define a function to calculate the distance between two sets of coordinates using the Haversine formula
+    def haversine(lat1, lon1, lat2, lon2):
+        R = 6371  # Radius of the earth in kilometers
+        dLat = radians(lat2 - lat1)
+        dLon = radians(lon2 - lon1)
+        a = sin(dLat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon/2)**2
+        c = 2 * asin(sqrt(a))
+        return R * c
+    
+    # Calculate the distance between the input coordinates and each city in the DataFrame
+    weather_df['distance'] = weather_df.apply(lambda row: haversine(lat, lon, row['Lat'], row['Lon']), axis=1)
+
+    fire_df['distance'] = fire_df.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
+
+    closest_fire = fire_df.loc[fire_df['distance'].idxmin()]
+
+
+        
+
+
+    # Find the city with the smallest distance
+    closest_city = weather_df.loc[weather_df['distance'].idxmin()]['ID']
+    
+    fpath = 'data/weather/' + str(closest_city) + '.csv'
+
+    city_df = pd.read_csv(fpath)
+    
+    # Find the row in the DataFrame that matches the given date
+    date_row = city_df.loc[city_df['Date'] == date]
+    
+    # If the row is found, return the corresponding temperature value
+    if not date_row.empty:
+        tmax = date_row.iloc[0]['tmax']
+        tmin = date_row.iloc[0]['tmin']
+        prcp = date_row.iloc[0]['prcp']
+        return tmax
+
+    # Otherwise, return an error message
+    else:
+        return "Temperature data not found for given date."
+
+def parseTmin(lat, lon, date):
+    # Load the spreadsheet into a Pandas DataFrame
+    weather_df = pd.read_csv('data/weather/city_info.csv')
+    fire_df = pd.read_csv('data/modis_2021_United_States.csv')
+    
+    # Define a function to calculate the distance between two sets of coordinates using the Haversine formula
+    def haversine(lat1, lon1, lat2, lon2):
+        R = 6371  # Radius of the earth in kilometers
+        dLat = radians(lat2 - lat1)
+        dLon = radians(lon2 - lon1)
+        a = sin(dLat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon/2)**2
+        c = 2 * asin(sqrt(a))
+        return R * c
+    
+    # Calculate the distance between the input coordinates and each city in the DataFrame
+    weather_df['distance'] = weather_df.apply(lambda row: haversine(lat, lon, row['Lat'], row['Lon']), axis=1)
+
+    fire_df['distance'] = fire_df.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
+
+    closest_fire = fire_df.loc[fire_df['distance'].idxmin()]
+
+
+        
+
+
+    # Find the city with the smallest distance
+    closest_city = weather_df.loc[weather_df['distance'].idxmin()]['ID']
+    
+    fpath = 'data/weather/' + str(closest_city) + '.csv'
+
+    city_df = pd.read_csv(fpath)
+    
+    # Find the row in the DataFrame that matches the given date
+    date_row = city_df.loc[city_df['Date'] == date]
+    
+    # If the row is found, return the corresponding temperature value
+    if not date_row.empty:
+        tmax = date_row.iloc[0]['tmax']
+        tmin = date_row.iloc[0]['tmin']
+        prcp = date_row.iloc[0]['prcp']
+        return tmin
+
+    # Otherwise, return an error message
+    else:
+        return "Temperature data not found for given date."
+ 
+
+def parsePrcp(lat, lon, date):
+    # Load the spreadsheet into a Pandas DataFrame
+    weather_df = pd.read_csv('data/weather/city_info.csv')
+    fire_df = pd.read_csv('data/modis_2021_United_States.csv')
+    
+    # Define a function to calculate the distance between two sets of coordinates using the Haversine formula
+    def haversine(lat1, lon1, lat2, lon2):
+        R = 6371  # Radius of the earth in kilometers
+        dLat = radians(lat2 - lat1)
+        dLon = radians(lon2 - lon1)
+        a = sin(dLat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon/2)**2
+        c = 2 * asin(sqrt(a))
+        return R * c
+    
+    # Calculate the distance between the input coordinates and each city in the DataFrame
+    weather_df['distance'] = weather_df.apply(lambda row: haversine(lat, lon, row['Lat'], row['Lon']), axis=1)
+
+    fire_df['distance'] = fire_df.apply(lambda row: haversine(lat, lon, row['latitude'], row['longitude']), axis=1)
+
+    closest_fire = fire_df.loc[fire_df['distance'].idxmin()]
+
+
+        
+
+
+    # Find the city with the smallest distance
+    closest_city = weather_df.loc[weather_df['distance'].idxmin()]['ID']
+    
+    fpath = 'data/weather/' + str(closest_city) + '.csv'
+
+    city_df = pd.read_csv(fpath)
+    
+    # Find the row in the DataFrame that matches the given date
+    date_row = city_df.loc[city_df['Date'] == date]
+    
+    # If the row is found, return the corresponding temperature value
+    if not date_row.empty:
+        tmax = date_row.iloc[0]['tmax']
+        tmin = date_row.iloc[0]['tmin']
+        prcp = date_row.iloc[0]['prcp']
+        return prcp
+
+    # Otherwise, return an error message
+    else:
+        return "Temperature data not found for given date."
+ 
 # print(parseData(40.833458, -73.457279, '1869-01-01'))
 
 def checkForFire(lat, lon, date):
@@ -82,6 +222,6 @@ def checkForFire(lat, lon, date):
         print('There has not been a fire in this Area during the specified date.')
 
 
-checkForFire(46.789039, -100.787397, '1988-12-08')
+# checkForFire(46.789039, -100.787397, '1988-12-08')
 
 
