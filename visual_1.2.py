@@ -96,5 +96,4 @@ city_locations.plot(ax=ax,
 ax.set(title="World Map - Geographic Coordinate Reference System (long/lat degrees)",
        xlabel="X Coordinates (meters)",
        ylabel="Y Coordinates (meters)");
-
-# def createGraph(lat, lon):
+plt.show()
