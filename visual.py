@@ -1,4 +1,4 @@
-import os 
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,7 +6,7 @@ from matplotlib.ticker import ScalarFormatter
 import seaborn as sns
 import geopandas as gpd
 from shapely.geometry import Point
-import earthpy as et 
+import earthpy as et
 
 # Adjust plot font sizes
 sns.set(font_scale=1.5)
@@ -14,7 +14,7 @@ sns.set_style("white")
 
 # Set working dir & get data
 data = et.data.get_data('spatial-vector-lidar')
-os.chdir(os.path.join(et.io.HOME, 'earth-analytics'))
+os.chdir(os.path.join(et.io.HOME ,'earth-analytics'))
 
 # Import world boundary shapefile
 worldBound_path = os.path.join("data", "spatial-vector-lidar", "global", 
@@ -97,4 +97,6 @@ ax.set(title="World Map - Geographic Coordinate Reference System (long/lat degre
        xlabel="X Coordinates (meters)",
        ylabel="Y Coordinates (meters)");
 
+
+plt.show()
 # def createGraph(lat, lon):
