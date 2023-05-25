@@ -26,7 +26,7 @@ os.chdir(os.path.join(et.io.HOME, 'earth-analytics'))
 
 # Import world boundary shapefile
 worldBound_path = os.path.join("data", "spatial-vector-lidar", "global", 
-                               "ne_110m_land", "ne_110m_land.shp")
+                               "ne_110m_land", "ne_110m_land.shp", "/Users/emilychristians/desktop/data/cb_2014_us_state_500k/cb_2014_us_state_500k.shp")
 worldBound = gpd.read_file(worldBound_path)
 
 # Plot worldBound data using geopandas
