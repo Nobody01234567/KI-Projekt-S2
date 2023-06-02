@@ -97,8 +97,11 @@ def checkForFire(lat, lon, date, fire_df):
     closest_fire = fire_df.loc[fire_df['distance'].idxmin()]
     closest_dist = closest_fire['distance']
     closest_date = arrow.get(closest_fire['acq_date'])
+    #i have found that the map does not work the date is included in the search
+    #i recommend just making it a comment if you want to plot the map untill thats fixed 
+    #i did that in here in line 104
     delta = abs(closest_date - arrow.get(date))
-    if closest_dist < 20 and delta.days < 10:
+    if closest_dist < 20: #and delta.days < 10:
         message = 'There has been a fire in this area. It occurred on ' + closest_fire['acq_date'] + ' and was ' + str(closest_dist) + ' km away from the specified coordinates. Coordinates: ' + str(closest_fire['latitude']) + ',' + str(closest_fire['longitude'])
         print(message)
         return True
